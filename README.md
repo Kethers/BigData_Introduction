@@ -1,2 +1,2 @@
 # BigData_Introduction
-2020秋HITSZ大数据导论课程相关代码
+2020秋HITSZ大数据导论课程相关资料
