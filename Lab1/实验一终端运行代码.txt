@@ -1,0 +1,44 @@
+sudo tar -xzvf /home/kethershao/Desktop/hadoop-2.7.2.tar.gz -C /usr/local
+sudo mv /usr/local/hadoop-2.7.2 /usr/local/Hadoop
+sudo chown -R hadoop:hadoop /usr/local/Hadoop
+
+sudo vim /etc/profile
+export HADOOP_HOME=/usr/local/Hadoop
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+source /etc/profile
+vim /usr/local/Hadoop/etc/hadoop/hadoop-env.sh
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+sudo mkdir -p /usr/test/hadoop
+sudo chown -R hadoop:hadoop /usr/test/hadoop
+mkdir -p /usr/test/hadoop/input
+
+cp /home/kethershao/PycharmProjects/bigdata_crawler/divided_with_spaces.txt /usr/test/hadoop/input
+hadoop jar /usr/local/Hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount /usr/test/hadoop/input /usr/test/hadoop/output
+cat /usr/test/hadoop/output/part-r-00000
+
+
+vim /usr/local/Hadoop/etc/hadoop/core-site.xml
+
+vim /usr/local/Hadoop/etc/hadoop/hdfs-site.xml
+
+/usr/local/Hadoop/bin/hdfs namenode -format
+/usr/local/Hadoop/sbin/start-dfs.sh
+jps
+
+/usr/local/Hadoop/bin/hdfs dfs -mkdir -p /user/hadoop
+/usr/local/Hadoop/bin/hdfs dfs -mkdir input
+/usr/local/Hadoop/bin/hdfs dfs -put /home/kethershao/PycharmProjects/bigdata_crawler/divided_with_spaces.txt input
+hadoop jar /usr/local/Hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount input output
+/usr/local/Hadoop/bin/hdfs dfs -cat output/part-r-00000
+/usr/local/Hadoop/bin/hdfs dfs -get output ./output
+cat /usr/local/Hadoop/output/part-r-00000
+
+
+
+vim /usr/local/Hadoop/etc/hadoop/yarn-site.xml
+cd /usr/local/Hadoop
+mv ./etc/hadoop/mapred-site.xml.template ./etc/hadoop/mapred-site.xml
+vim ./etc/hadoop/mapred-site.xml
+
+/usr/local/Hadoop/sbin/start-yarn.sh
+/usr/local/Hadoop/sbin/stop-yarn.sh
